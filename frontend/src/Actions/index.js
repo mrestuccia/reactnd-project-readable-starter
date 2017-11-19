@@ -1,5 +1,9 @@
-import categories from './categories';
+import {requestCategories} from './categories';
+import {requestPosts} from './posts';
+import {requestComments} from './comments'
 
 export {
-  categories
+  requestCategories,
+  requestPosts,
+  requestComments
 }

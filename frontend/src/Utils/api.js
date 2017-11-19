@@ -1,4 +1,4 @@
-const AUTH_KEY = process.env.REACT_AUTH_KEY
+const AUTH_KEY = process.env.REACT_AUTH_KEY || 'something'
 
 
 // Setup the header // URL?
@@ -16,4 +16,24 @@ export function getCategories() {
   })
     .then(res => res.json())
     .then(data => data.categories);
+}
+
+
+// Get all the post
+export function getPosts() {
+  console.log('feching posts');
+  return fetch(`http://localhost:3001/posts`, {
+    headers
+  })
+    .then(res => (res.json()));
+}
+
+
+// Get all the comments
+export function getComments(id) {
+  console.log('feching comments');
+  return fetch(`http://localhost:3001/posts/${id}/comments`, {
+    headers
+  })
+    .then(res => (res.json()));
 }

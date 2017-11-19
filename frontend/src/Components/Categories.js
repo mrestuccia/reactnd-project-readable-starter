@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 
-import { requestCategories } from '../Actions/categories'
+import { requestCategories } from '../Actions/'
 
 
 
@@ -17,7 +18,15 @@ class Categories extends Component {
     return (
       <ul>
         {
-          categories.map((item, idx) => (<li key={idx}>{item.name} </li>))
+          categories.map((category, idx) => {
+            return (
+              <Link to={`/category/${category.path}/`}>
+                <li key={`_${category.path}/`}>
+                  {category.name}
+                </li>
+              </Link>
+            )
+          })
         }
       </ul>
     );
