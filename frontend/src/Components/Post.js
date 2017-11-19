@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { requestComments } from '../Actions/'
+import { requestComments, updateVote } from '../Actions/'
 
 import Comment from './Comment'
+import Vote from './Vote'
 
 
 class Post extends Component {
@@ -12,7 +13,7 @@ class Post extends Component {
   }
 
   render() {
-    const { post } = this.props;
+    const { post, updateVote } = this.props;
     if (!post) return null;
 
     return (
@@ -22,9 +23,12 @@ class Post extends Component {
         <div>{post.author}</div>
         <div>{post.category}</div>
         <div>{post.voteScore}</div>
+
+        {<Vote id={post.id} func={updateVote} />}
+
         <div>{post.deleted}</div>
 
-        <Comment />
+        <Comment parentId={post.id} />
 
       </div>
 
@@ -48,6 +52,7 @@ const mapStateToProps = (state, props) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     requestComments: (id) => dispatch(requestComments(id)),
+    updateVote: (id, option) => dispatch(updateVote(id, option)),
   }
 }
 

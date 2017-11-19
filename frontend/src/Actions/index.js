@@ -1,9 +1,11 @@
-import {requestCategories} from './categories';
-import {requestPosts} from './posts';
-import {requestComments} from './comments'
+import {requestCategories} from './categories'
+import {requestPosts, updateVote} from './posts'
+import {requestComments, addComment} from './comments'
 
 export {
   requestCategories,
   requestPosts,
-  requestComments
+  updateVote,
+  requestComments,
+  addComment
 }
