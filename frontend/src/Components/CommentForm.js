@@ -2,29 +2,38 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import uuidv1 from 'uuid/v1';
 
-import { addComment } from '../Actions/'
-
-console.log('addComment', addComment);
+// Actions
+import { addComment } from '../Actions/comments'
 
 class CommentForm extends Component {
+  // Local State
   state = {
     body: '',
     author: ''
   }
 
-  onInputChange = (key, ev) => {
-    this.setState({ [key]: ev.target.value })
+  // Local Actions
+  onInputChange = (key, value) => {
+    this.setState({ [key]: value })
   }
 
+  // Action connected
   onSubmit = (ev) => {
     ev.preventDefault();
-    var comment = {}
-    comment.id = uuidv1();
-    comment.timestamp = Date.now();
-    comment.parentId = this.props.parentId;
-    comment.author = this.state.author;
-    comment.body = this.state.body;
-    this.props.addComment(comment);
+
+    this.props.addComment({
+      id: uuidv1(),
+      timestamp: Date.now(),
+      parentid: this.props.parentId,
+      author: this.state.author,
+      body: this.state.body,
+    })
+      .then(res => {
+        this.setState({
+          body: '',
+          author: ''
+        });
+      });
   }
 
 
@@ -35,12 +44,12 @@ class CommentForm extends Component {
           type="text"
           name='author'
           value={this.state.author}
-          onChange={this.onInputChange.bind(null, 'author')} />
-        <textarea
+          onChange={(ev) => this.onInputChange('author', ev.target.value)} />
+        <input
           type="text"
           name='body'
           value={this.state.body}
-          onChange={this.onInputChange.bind(null, 'body')} />
+          onChange={(ev) => this.onInputChange('body', ev.target.value)} />
         <button>Comment</button>
       </form>
     )

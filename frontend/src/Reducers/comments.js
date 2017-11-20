@@ -1,4 +1,4 @@
-import { GET_COMMENTS, ADD_COMMENT } from '../Actions/actionTypes'
+import { GET_COMMENTS, ADD_COMMENT, UPDATE_COMMENT } from '../Actions/actionTypes'
 
 
 const commentsReducer = (state = [], action) => {
@@ -7,6 +7,14 @@ const commentsReducer = (state = [], action) => {
       return [...action.comments];
     case ADD_COMMENT:
       return [...state, action.comment]
+    case UPDATE_COMMENT:
+      let comments = state.map(comment => {
+        if (comment.id === action.comment.id){
+          comment = action.comment;
+        }
+        return comment;
+      })
+      return  [...comments];
     default:
       return state;
   }

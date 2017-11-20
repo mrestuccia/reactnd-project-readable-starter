@@ -64,3 +64,25 @@ export function addComment(comment) {
   })
     .then(res => (res.json()));
 }
+
+
+// Add Comment 
+export function deleteComment(id) {
+  return fetch(`http://localhost:3001/comments/${id}`, {
+    method: 'DELETE',
+    headers
+  })
+    .then(res => (res.json()));
+}
+
+// Update Comment Vote 
+export function updateCommentVote(id, option) {
+  return fetch(`http://localhost:3001/comments/${id}`, {
+    method: 'POST',
+    body: JSON.stringify({option: option}),
+    headers
+  })
+    .then(res => (res.json()));
+}
+
+

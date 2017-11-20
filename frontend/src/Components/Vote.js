@@ -1,10 +1,10 @@
 import React from 'react';
 
 
-const Vote = ({ id, func, parentId}) => {
+const Vote = ({ id, func}) => {
 
     const onClick = (option) => {
-        func(id, option, parentId)
+        func(id, option)
     }
 
     return (

@@ -7,8 +7,7 @@ const postsReducer = (state = [], action) => {
       return [...action.posts];
 
     case UPDATE_VOTE:
-      console.log('action = ', action.post)
-      var posts = state.map(post => {
+      let posts = state.map(post => {
         if (post.id === action.post.id){
           post = action.post;
         }
