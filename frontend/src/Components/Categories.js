@@ -2,13 +2,18 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
-import { requestCategories } from '../Actions/'
-
+import { requestCategories } from '../Actions/categories'
+import { requestPosts } from '../Actions/posts'
 
 
 class Categories extends Component {
   componentDidMount() {
     this.props.requestCategories()
+  }
+
+  postsCategories(ev, name) {
+    ev.preventDefault();
+    this.props.requestPosts(name)
   }
 
   render() {
@@ -20,10 +25,8 @@ class Categories extends Component {
         {
           categories.map((category, idx) => {
             return (
-              <Link to={`/category/${category.path}/`}>
-                <li key={`_${category.path}/`}>
-                  {category.name}
-                </li>
+              <Link key={idx} to={`/category/${category.path}/`}>
+                <li>{category.name}</li>
               </Link>
             )
           })
@@ -35,10 +38,11 @@ class Categories extends Component {
 
 
 
-function mapStateToProps({ categories }) {
+function mapStateToProps({ categories, posts }) {
   return {
-    categories
+    categories,
+    posts
   }
 }
 
-export default connect(mapStateToProps, { requestCategories })(Categories);
+export default connect(mapStateToProps, { requestCategories, requestPosts })(Categories);

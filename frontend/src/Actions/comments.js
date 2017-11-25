@@ -1,10 +1,11 @@
 import * as api from '../Utils/api.js'
 
 // Constants
-import { 
-  GET_COMMENTS, 
-  ADD_COMMENT,  
-  UPDATE_COMMENT } from './actionTypes'
+import {
+  GET_COMMENTS,
+  ADD_COMMENT,
+  UPDATE_COMMENT
+} from './actionTypes'
 
 // Actions Creators
 export function getComments(comments) {
@@ -44,6 +45,13 @@ export const addComment = (comment) => (dispatch) => {
     })
 }
 
+export const updateComment = (comment) => (dispatch) => {
+  return api.updateComment(comment)
+    .then(comment => {
+      return dispatch(updateCommentSuccess(comment))
+    })
+}
+
 export const deleteComment = (id) => (dispatch) => {
   return api.deleteComment(id)
     .then(comment => {
@@ -54,8 +62,7 @@ export const deleteComment = (id) => (dispatch) => {
 export const updateCommentVote = (id, option) => dispatch => {
   return api.updateCommentVote(id, option)
     .then(comment => {
-      console.log('comment from api', comment);
       return dispatch(updateCommentSuccess(comment))
-    
+
     })
 };

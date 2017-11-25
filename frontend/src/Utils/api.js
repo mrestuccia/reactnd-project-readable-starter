@@ -21,13 +21,16 @@ export function getCategories() {
 
 
 // Get all the post
-export function getPosts() {
-  console.log('feching posts');
-  return fetch(`http://localhost:3001/posts`, {
+export function getPosts(category) {
+  console.log('feching posts', category);
+
+  return fetch((!category)?`http://localhost:3001/posts`:`http://localhost:3001/${category}/posts`, {
     headers
   })
     .then(res => (res.json()));
 }
+
+
 
 
 // Get all the comments
@@ -66,7 +69,7 @@ export function addComment(comment) {
 }
 
 
-// Add Comment 
+// Delete Comment 
 export function deleteComment(id) {
   return fetch(`http://localhost:3001/comments/${id}`, {
     method: 'DELETE',
@@ -74,6 +77,19 @@ export function deleteComment(id) {
   })
     .then(res => (res.json()));
 }
+
+
+// Update Comment 
+export function updateComment(comment) {
+  console.log('update Comment', comment)
+  return fetch(`http://localhost:3001/comments/${comment.id}`, {
+    method: 'PUT',
+    body: JSON.stringify(comment),
+    headers
+  })
+    .then(res => (res.json()));
+}
+
 
 // Update Comment Vote 
 export function updateCommentVote(id, option) {
@@ -84,5 +100,39 @@ export function updateCommentVote(id, option) {
   })
     .then(res => (res.json()));
 }
+
+
+// Post
+export function addPost(post) {
+  console.log('api: Add Post', addPost);
+  return fetch(`http://localhost:3001/posts/`, {
+    method: 'POST',
+    body: JSON.stringify(post),
+    headers
+  })
+    .then(res => (res.json()));
+}
+
+
+export function updatePost(id, title, body) {
+  console.log('api: Save Post', id);
+  return fetch(`http://localhost:3001/posts/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify({title, body}),
+    headers
+  })
+    .then(res => (res.json()));
+}
+
+
+export function deletePost(id) {
+  console.log('api: Delete Post', id);
+  return fetch(`http://localhost:3001/posts/${id}`, {
+    method: 'DELETE',
+    headers
+  })
+    .then(res => (res.json()));
+}
+
 
 

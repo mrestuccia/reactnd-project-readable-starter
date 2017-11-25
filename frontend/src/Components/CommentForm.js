@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import uuidv1 from 'uuid/v1';
 
 // Actions
-import { addComment } from '../Actions/comments'
+import { addComment, updateComment } from '../Actions/comments'
 
 class CommentForm extends Component {
   // Local State
@@ -17,51 +17,58 @@ class CommentForm extends Component {
     this.setState({ [key]: value })
   }
 
-  // Action connected
   onSubmit = (ev) => {
     ev.preventDefault();
 
-    this.props.addComment({
-      id: uuidv1(),
-      timestamp: Date.now(),
-      parentid: this.props.parentId,
-      author: this.state.author,
-      body: this.state.body,
-    })
-      .then(res => {
-        this.setState({
-          body: '',
-          author: ''
-        });
-      });
+    const { updateComment, addComment, comment, postId, onChangeState } = this.props;
+
+
+    if (!comment) {
+
+      const newComment = {
+        id: uuidv1(),
+        timestamp: Date.now(),
+        body: this.state.body,
+        author: this.state.author,
+        parentId: postId
+      }
+
+      addComment(newComment).then(res => this.setState({ body: '', author: '' }));
+    } else {
+      updateComment(this.state).then(res => onChangeState())
+    }
   }
 
+  componentDidMount() {
+    const { comment } = this.props;
+
+    if (comment) {
+      this.setState(comment);
+    }
+  }
 
   render() {
     return (
       <form onSubmit={this.onSubmit}>
-        <input
-          type="text"
-          name='author'
+        <input type="text" name='author'
           value={this.state.author}
           onChange={(ev) => this.onInputChange('author', ev.target.value)} />
-        <input
-          type="text"
-          name='body'
+        <input type="text" name='body'
           value={this.state.body}
           onChange={(ev) => this.onInputChange('body', ev.target.value)} />
-        <button>Comment</button>
+        <button>Save</button>
       </form>
     )
   }
 }
 
 
+
 const mapDispatchToProps = (dispatch) => {
   return {
-    addComment: (comment) => dispatch(addComment(comment))
+    addComment: (comment) => dispatch(addComment(comment)),
+    updateComment: (comment) => dispatch(updateComment(comment))
   }
 }
-
 
 export default connect(null, mapDispatchToProps)(CommentForm);

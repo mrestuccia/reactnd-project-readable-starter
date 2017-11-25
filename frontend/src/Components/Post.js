@@ -1,19 +1,20 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom';
 
 import { requestComments, updateVote } from '../Actions/'
 
-import Comment from './Comment'
+import Comments from './Comments'
 import Vote from './Vote'
 
 
 class Post extends Component {
   componentDidMount() {
-    this.props.requestComments(this.props.postid)
+    this.props.requestComments(this.props.postId)
   }
 
   render() {
-    const { post, updateVote } = this.props;
+    const { post, updateVote, postId } = this.props;
     if (!post) return null;
 
     return (
@@ -28,7 +29,11 @@ class Post extends Component {
 
         <div>{post.deleted}</div>
 
-        <Comment parentId={post.id} />
+        <Comments postId={postId}/>
+
+        <br />
+        <Link to={`/edit/${postId}`}>Edit</Link>
+
 
       </div>
 
@@ -39,12 +44,12 @@ class Post extends Component {
 
 
 const mapStateToProps = (state, props) => {
-  const postid = props.match.params.postid
-  const post = state.posts.filter(post => post.id === postid)[0];
+  const postId = props.match.params.postid
+  const post = state.posts.filter(post => post.id === postId)[0];
   const comments = state.comments
   return {
     post,
-    postid,
+    postId,
     comments
   }
 }

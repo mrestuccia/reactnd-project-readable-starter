@@ -4,33 +4,27 @@ import { Route, Link } from 'react-router-dom';
 import Categories from './Categories'
 import Posts from './Posts'
 import Post from './Post'
-import CreatePost from './CreatePost'
+import PostForm from './PostForm'
 
 
 
-class App extends Component {
-  render() {
-    return (
-      <div>
-        <h1><Link to='/'>Readable</Link></h1>
-        <Categories />
-        <Route exact path='/' render={() => (
-          <Posts />
-        )} />
-       
+const App = () => {
+  return (
+    <div>
+      <h1><Link to='/'>Readable</Link></h1>
+      <Categories />
 
-        <Route exact path='/category/:categoryid' render={() => (
-          <Posts />
-        )} />
+      <Route exact path='/' render={() => (
+        <Posts />
+      )} />
 
-        <Route path='/post/:postid' component={Post} />
+      <Route exact path='/category/:categoryid' component={Posts} />
+      <Route exact path='/post/:postid' component={Post} />
+      <Route exact path='/edit/:postid?' component={PostForm} />
 
-        <Route exact path='/create' render={() => (
-          <CreatePost />
-        )} />
-      </div>
-    );
-  }
+    </div>
+  );
 }
+
 
 export default App;

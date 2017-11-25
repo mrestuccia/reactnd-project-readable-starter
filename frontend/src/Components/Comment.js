@@ -1,43 +1,47 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-
-import CommentForm from './CommentForm'
 import Vote from './Vote'
+import CommentForm from './CommentForm'
 
 
 // Actions
-import { deleteComment, updateCommentVote } from '../Actions/comments'
+import { updateComment, deleteComment, updateCommentVote } from '../Actions/comments'
 
 
 class Comment extends Component {
-  render() {
-    const { comments, parentId, updateCommentVote, deleteComment } = this.props;
 
-    console.log('')
-    if (!comments) return null;
+  state = {
+    editMode: false
+  }
+
+  onChangeState = () => {
+    this.setState({ editMode: !this.state.editMode })
+  }
+
+
+  render() {
+    const { comment, updateCommentVote, deleteComment } = this.props;
+
+    if (!comment) return null;
     return (
-      <div>
-        {comments.map(comment => (
+      this.state.editMode ?
+        <CommentForm comment = {comment} onChangeState= {this.onChangeState}/>
+        :
+        <div>
           <div key={comment.id}>
-            {comment.body} -
-            {comment.author} -
-            {comment.voteScore} -
+            [{comment.author}]
+            {comment.body}
+            {comment.voteScore}
             {<Vote id={comment.id} func={updateCommentVote} />} -
             <button onClick={() => deleteComment(comment.id)} >Delete</button>
-
-          </div>))}
-        <CommentForm parentId={parentId} />
-      </div>
+            <button onClick={this.onChangeState}>Edit</button>
+          </div>
+        </div>
     )
 
   }
 }
 
-const mapStateToProps = (state, props) => {
-  return {
-    comments: state.comments
-  }
-}
 
 function mapDispatchToProps(dispatch) {
   return {
@@ -49,4 +53,4 @@ function mapDispatchToProps(dispatch) {
 
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Comment);
+export default connect(null, mapDispatchToProps)(Comment);
