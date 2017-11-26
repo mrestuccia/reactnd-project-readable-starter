@@ -1,19 +1,23 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link} from 'react-router-dom'
 
 import { requestCategories } from '../Actions/categories'
 import { requestPosts } from '../Actions/posts'
 
 
 class Categories extends Component {
+  state = {
+    selected: 'all'
+  }
   componentDidMount() {
     this.props.requestCategories()
   }
 
-  postsCategories(ev, name) {
+  onClick = (ev, category) => {
     ev.preventDefault();
-    this.props.requestPosts(name)
+    this.setState({ selected: category.name });
+    this.props.requestPosts(category.path)
   }
 
   render() {
@@ -21,17 +25,21 @@ class Categories extends Component {
 
     if (!categories) return null;
     return (
-      <ul>
-        {
-          categories.map((category, idx) => {
-            return (
-              <Link key={idx} to={`/category/${category.path}/`}>
-                <li>{category.name}</li>
-              </Link>
-            )
-          })
-        }
-      </ul>
+      <div>
+        <ul className="nav nav-tabs">
+          {
+            categories.map((category, idx) => {
+              return (
+                <li key={idx} className={(category.name === this.state.selected) ? `active` : ``}>
+                  <Link to={(category.path) ? `/category/${category.path}/` : `/`} onClick={(ev, ) => this.onClick(ev, category)}>
+                    {category.name}
+                  </Link>
+                </li>
+              )
+            })
+          }
+        </ul>
+      </div>
     );
   }
 }
@@ -40,7 +48,7 @@ class Categories extends Component {
 
 function mapStateToProps({ categories, posts }) {
   return {
-    categories,
+    categories: [{ path: null, name: 'all' }, ...categories],
     posts
   }
 }

@@ -1,4 +1,5 @@
 const AUTH_KEY = process.env.REACT_AUTH_KEY || 'something'
+const URL = process.env.URL || 'http://localhost:3001'
 
 
 // Setup the header // URL?
@@ -11,8 +12,7 @@ const headers = {
 
 // Get all the categories
 export function getCategories() {
-  console.log('feching categories');
-  return fetch(`http://localhost:3001/categories`, {
+  return fetch(`${URL}/categories`, {
     headers
   })
     .then(res => res.json())
@@ -22,21 +22,16 @@ export function getCategories() {
 
 // Get all the post
 export function getPosts(category) {
-  console.log('feching posts', category);
-
-  return fetch((!category)?`http://localhost:3001/posts`:`http://localhost:3001/${category}/posts`, {
+  return fetch((!category)?`${URL}/posts`:`${URL}/${category}/posts`, {
     headers
   })
     .then(res => (res.json()));
 }
 
 
-
-
 // Get all the comments
 export function getComments(id) {
-  console.log('feching comments');
-  return fetch(`http://localhost:3001/posts/${id}/comments`, {
+  return fetch(`${URL}/posts/${id}/comments`, {
     headers
   })
     .then(res => (res.json()));
@@ -46,9 +41,7 @@ export function getComments(id) {
 
 // Update Vote
 export function updateVote(id, option) {
-  console.log('fech: post vote', option);
-
-  return fetch(`http://localhost:3001/posts/${id}`, {
+  return fetch(`${URL}/posts/${id}`, {
     method: 'POST',
     body: JSON.stringify({ option: option }),
     headers
@@ -59,8 +52,7 @@ export function updateVote(id, option) {
 
 // Add Comments 
 export function addComment(comment) {
-  console.log('api: Add Comment', comment);
-  return fetch(`http://localhost:3001/comments`, {
+  return fetch(`${URL}/comments`, {
     method: 'POST',
     body: JSON.stringify(comment),
     headers
@@ -71,7 +63,7 @@ export function addComment(comment) {
 
 // Delete Comment 
 export function deleteComment(id) {
-  return fetch(`http://localhost:3001/comments/${id}`, {
+  return fetch(`${URL}/comments/${id}`, {
     method: 'DELETE',
     headers
   })
@@ -81,8 +73,7 @@ export function deleteComment(id) {
 
 // Update Comment 
 export function updateComment(comment) {
-  console.log('update Comment', comment)
-  return fetch(`http://localhost:3001/comments/${comment.id}`, {
+  return fetch(`${URL}/comments/${comment.id}`, {
     method: 'PUT',
     body: JSON.stringify(comment),
     headers
@@ -93,7 +84,7 @@ export function updateComment(comment) {
 
 // Update Comment Vote 
 export function updateCommentVote(id, option) {
-  return fetch(`http://localhost:3001/comments/${id}`, {
+  return fetch(`${URL}/comments/${id}`, {
     method: 'POST',
     body: JSON.stringify({option: option}),
     headers
@@ -104,8 +95,7 @@ export function updateCommentVote(id, option) {
 
 // Post
 export function addPost(post) {
-  console.log('api: Add Post', addPost);
-  return fetch(`http://localhost:3001/posts/`, {
+  return fetch(`${URL}/posts/`, {
     method: 'POST',
     body: JSON.stringify(post),
     headers
@@ -115,8 +105,7 @@ export function addPost(post) {
 
 
 export function updatePost(id, title, body) {
-  console.log('api: Save Post', id);
-  return fetch(`http://localhost:3001/posts/${id}`, {
+  return fetch(`${URL}/posts/${id}`, {
     method: 'PUT',
     body: JSON.stringify({title, body}),
     headers
@@ -126,13 +115,9 @@ export function updatePost(id, title, body) {
 
 
 export function deletePost(id) {
-  console.log('api: Delete Post', id);
-  return fetch(`http://localhost:3001/posts/${id}`, {
+  return fetch(`${URL}/posts/${id}`, {
     method: 'DELETE',
     headers
   })
     .then(res => (res.json()));
 }
-
-
-

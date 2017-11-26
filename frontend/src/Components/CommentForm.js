@@ -17,11 +17,10 @@ class CommentForm extends Component {
     this.setState({ [key]: value })
   }
 
-  onSubmit = (ev) => {
+  onClick = (ev) => {
     ev.preventDefault();
 
     const { updateComment, addComment, comment, postId, onChangeState } = this.props;
-
 
     if (!comment) {
 
@@ -39,6 +38,11 @@ class CommentForm extends Component {
     }
   }
 
+  onCancel = (ev) => {
+    ev.preventDefault();
+
+    this.props.onChangeState()
+  }
   componentDidMount() {
     const { comment } = this.props;
 
@@ -48,16 +52,28 @@ class CommentForm extends Component {
   }
 
   render() {
+    const { comment } = this.props;
+
     return (
-      <form onSubmit={this.onSubmit}>
-        <input type="text" name='author'
-          value={this.state.author}
-          onChange={(ev) => this.onInputChange('author', ev.target.value)} />
-        <input type="text" name='body'
-          value={this.state.body}
-          onChange={(ev) => this.onInputChange('body', ev.target.value)} />
-        <button>Save</button>
-      </form>
+      <div className="container">
+        <form className="form-horizontal">
+          <div className="form-group">
+            <input className="form-control" type="text" name='body' value={this.state.body}
+              onChange={(ev) => this.onInputChange('body', ev.target.value)}
+              placeholder='Content' />
+            <input className="form-control" type="text" name='author' value={this.state.author}
+              onChange={(ev) => this.onInputChange('author', ev.target.value)}
+              placeholder='Author' />
+
+            <button className="btn btn-default btn-sm pull-right" onClick={this.onClick}>
+              {(comment) ? 'Save' : 'Add comment'}
+            </button>
+            {(comment) ?
+              <button className="btn btn-default btn-sm pull-right" onClick={this.onCancel}>Cancel</button> :
+              ''}
+          </div>
+        </form>
+      </div>
     )
   }
 }

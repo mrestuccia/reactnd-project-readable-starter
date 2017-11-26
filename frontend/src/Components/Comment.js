@@ -5,7 +5,7 @@ import CommentForm from './CommentForm'
 
 
 // Actions
-import { updateComment, deleteComment, updateCommentVote } from '../Actions/comments'
+import { deleteComment, updateCommentVote } from '../Actions/comments'
 
 
 class Comment extends Component {
@@ -29,12 +29,10 @@ class Comment extends Component {
         :
         <div>
           <div key={comment.id}>
-            [{comment.author}]
-            {comment.body}
-            {comment.voteScore}
-            {<Vote id={comment.id} func={updateCommentVote} />} -
-            <button onClick={() => deleteComment(comment.id)} >Delete</button>
-            <button onClick={this.onChangeState}>Edit</button>
+            {<Vote id={comment.id} func={updateCommentVote} score={comment.voteScore} />} 
+            {comment.body}&nbsp;<small>by {comment.author}</small>
+            <button className="btn btn-default  btn-sm pull-right" onClick={() => deleteComment(comment.id)} >Delete</button>
+            <button className="btn btn-default  btn-sm pull-right" onClick={this.onChangeState}>Edit</button>
           </div>
         </div>
     )
@@ -45,7 +43,6 @@ class Comment extends Component {
 
 function mapDispatchToProps(dispatch) {
   return {
-    //updateComment: (comment, options) => dispatch(updateComment(comment, options)),
     deleteComment: (id) => dispatch(deleteComment(id)),
     updateCommentVote: (id, option) => dispatch(updateCommentVote(id, option)),
   }

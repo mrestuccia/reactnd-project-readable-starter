@@ -14,6 +14,7 @@ class Comments extends Component {
       <div>
         {comments
           .filter(comment => comment.deleted === false)
+          .sort( (a, b) => (b.voteScore - a.voteScore))
           .map(comment => (<Comment key={comment.id} comment={comment} />))}
         <CommentForm postId={postId} />
       </div>

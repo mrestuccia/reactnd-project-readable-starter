@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom';
+import moment from 'moment';
 
-import { requestComments, updateVote } from '../Actions/'
+import { requestComments } from '../Actions/comments'
+import { updateVote, deletePost}  from '../Actions/posts'
 
 import Comments from './Comments'
 import Vote from './Vote'
@@ -13,31 +15,34 @@ class Post extends Component {
     this.props.requestComments(this.props.postId)
   }
 
+  onDeleteClick(postId){
+    const {history, deletePost} = this.props;
+
+    deletePost(postId).then(history.goBack())
+  }
+
   render() {
     const { post, updateVote, postId } = this.props;
     if (!post) return null;
 
     return (
       <div>
-        <h2>{post.title}</h2>
-        <div>{post.body}</div>
-        <div>{post.author}</div>
-        <div>{post.category}</div>
-        <div>{post.voteScore}</div>
+        <div className="panel panel-default">
+          <div className="panel-body">
+          <h2>{post.title}</h2>
+          <div>{post.body}</div>
+          <div>by {post.author}</div>
+          <div>on { moment(post.timestamp).format('MM-DD-YYYY')}</div>
+          <div>{post.category}</div>
+          {<Vote id={post.id} func={updateVote} score={post.voteScore} />}
 
-        {<Vote id={post.id} func={updateVote} />}
+          <Link className="btn btn-default btn-sm pull-right" to={`/edit/${postId}`}>Edit</Link>
+          <button className="btn btn-default btn-sm pull-right" onClick={()=>this.onDeleteClick(postId)}>Delete</button>
+          </div>
+        </div>
 
-        <div>{post.deleted}</div>
-
-        <Comments postId={postId}/>
-
-        <br />
-        <Link to={`/edit/${postId}`}>Edit</Link>
-
-
+        <Comments postId={postId} />
       </div>
-
-
     )
   }
 }
@@ -58,6 +63,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     requestComments: (id) => dispatch(requestComments(id)),
     updateVote: (id, option) => dispatch(updateVote(id, option)),
+    deletePost: (id) => dispatch(deletePost(id))
   }
 }
 

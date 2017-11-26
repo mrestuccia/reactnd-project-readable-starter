@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Route, Link } from 'react-router-dom';
 
 import Categories from './Categories'
@@ -9,19 +9,23 @@ import PostForm from './PostForm'
 
 
 const App = () => {
+  
   return (
-    <div>
+    <div className="container">
       <h1><Link to='/'>Readable</Link></h1>
-      <Categories />
 
       <Route exact path='/' render={() => (
-        <Posts />
-      )} />
+        <div>
+          <Categories />
+          <Posts /> 
+        </div>
+        )
+      } />
 
       <Route exact path='/category/:categoryid' component={Posts} />
       <Route exact path='/post/:postid' component={Post} />
-      <Route exact path='/edit/:postid?' component={PostForm} />
 
+      <Route exact path='/edit/:postid?' component={PostForm} />
     </div>
   );
 }

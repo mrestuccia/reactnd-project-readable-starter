@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { BrowserRouter as Router } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import uuidv1 from 'uuid/v1';
 
 import { addPost, updatePost } from '../Actions/posts'
@@ -16,7 +16,6 @@ class PostForm extends Component {
   onInputChange = (key, value) => {
     this.setState({ [key]: value })
   }
-
 
   onSubmit = (ev) => {
     ev.preventDefault();
@@ -34,13 +33,11 @@ class PostForm extends Component {
       }
 
       addPost(newPost);
-      //history.push(`/post/${this.state.id}`)        
+      history.push(`/post/${newPost.id}`)        
     } else {
       updatePost(this.state.id, this.state.title, this.state.body)
       history.push(`/post/${this.state.id}`)
     }
-
-
   }
 
   componentDidMount() {
@@ -56,28 +53,39 @@ class PostForm extends Component {
         <h4>{(!post) ? 'Add' : 'Edit'} post</h4>
         <form>
           <input
+            className='form-control'
             type="text"
             name='title'
             value={this.state.title}
-            onChange={(ev) => this.onInputChange('title', ev.target.value)} />
+            onChange={(ev) => this.onInputChange('title', ev.target.value)} 
+            placeholder="title"
+            />
           <input
+            className='form-control'
             type="text"
             name='author'
             value={this.state.author}
-            onChange={(ev) => this.onInputChange('author', ev.target.value)} />
+            onChange={(ev) => this.onInputChange('author', ev.target.value)} 
+            placeholder="author"
+            />
           <textarea
+            className='form-control'
             type="text"
             name='body'
             value={this.state.body}
-            onChange={(ev) => this.onInputChange('body', ev.target.value)} />
+            onChange={(ev) => this.onInputChange('body', ev.target.value)} 
+            placeholder = "body"
+            />
           <select
+            className='form-control'
             name='category'
             value={this.state.category}
             onChange={(ev) => this.onInputChange('category', ev.target.value)} >
             {categories.map((category) => (<option key={category.name}>{category.name}</option>))}
           </select>
 
-          <button onClick={this.onSubmit}>Save</button>
+          <button className='btn btn-default pull-right' onClick={this.onSubmit}>Save</button>
+          <Link className="btn btn-default pull-right"to={`/`}>Cancel</Link>
         </form>
       </div>
     )
