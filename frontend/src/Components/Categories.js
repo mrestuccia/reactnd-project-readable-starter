@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Link} from 'react-router-dom'
 
 import { requestCategories } from '../Actions/categories'
 import { requestPosts } from '../Actions/posts'
@@ -15,9 +14,16 @@ class Categories extends Component {
   }
 
   onClick = (ev, category) => {
+    const { history } = this.props;
     ev.preventDefault();
     this.setState({ selected: category.name });
-    this.props.requestPosts(category.path)
+    this.props.requestPosts(category.path);
+
+    if(!category.path){
+      history.push('/');
+    }else{
+      history.push(`/${category.path}`)      
+    }
   }
 
   render() {
@@ -31,9 +37,9 @@ class Categories extends Component {
             categories.map((category, idx) => {
               return (
                 <li key={idx} className={(category.name === this.state.selected) ? `active` : ``}>
-                  <Link to={(category.path) ? `/category/${category.path}/` : `/`} onClick={(ev, ) => this.onClick(ev, category)}>
+                  <a onClick={(ev) => this.onClick(ev, category)}>
                     {category.name}
-                  </Link>
+                  </a>
                 </li>
               )
             })

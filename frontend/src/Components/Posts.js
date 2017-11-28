@@ -3,7 +3,9 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import moment from 'moment';
 
-import { requestPosts } from '../Actions/posts'
+import { requestPosts, deletePost, updateVote } from '../Actions/posts'
+
+import Vote from './Vote'
 
 
 
@@ -24,8 +26,15 @@ class Posts extends Component {
     }
   }
 
+  onDeleteClick(postId){
+    this.props.deletePost(postId)
+      .then(
+        this.props.history.push(`/`)
+      )
+  }
 
-  handleOptionChange =(ev)=> {
+
+  handleOptionChange = (ev) => {
     this.setState({
       sortOption: ev.target.value
     });
@@ -44,7 +53,7 @@ class Posts extends Component {
   }
 
   render() {
-    const { posts } = this.props;
+    const { posts, updateVote } = this.props;
     let func;
     if (this.state.sortOption === 'vote') {
       func = (a, b) => b.voteScore - a.voteScore;
@@ -66,33 +75,57 @@ class Posts extends Component {
         </p>
 
         <table className="table table-striped">
+          <thead>
+            <tr>
+              <th></th>
+              <th>title</th>
+              <th>date</th>
+              <th>author</th>
+              <th>comments</th>
+              <th></th>
+            </tr>
+          </thead>
           <tbody>
             {
-
               posts
                 .filter(post => post.deleted === false)
                 .sort(func)
                 .map((post) => (
                   <tr key={post.id}>
-                    <td>{post.voteScore}</td>
-                    <td><Link to={`/post/${post.id}`}>{post.title}</Link></td>
+                    <td> {<Vote id={post.id} func={updateVote} score={post.voteScore} />}</td>
+                    <td><Link to={`/${post.category}/${post.id}`}>{post.title}</Link></td>
                     <td>{moment(post.timestamp).format('MM-DD-YYYY')}</td>
+                    <td>{post.author}</td>
+                    <td>{post.commentCount}</td>
+                    <td>
+                      <Link className="btn btn-default btn-sm pull-right" to={`/${post.category}/${post.id}`}>Edit</Link>
+                      <button className="btn btn-default btn-sm pull-right" onClick={() => this.onDeleteClick(post.id)}>Delete</button>
+                    </td>
+
                   </tr>))
             }
           </tbody>
         </table>
 
-        <Link className="btn btn-default pull-right"to={`/edit/`}>Add Post</Link>
+        <Link className="btn btn-default pull-right" to={`/add/`}>Add Post</Link>
       </div>
     );
   }
 }
 
 
-function mapStateToProps({ posts }) {
+function mapStateToProps(state, props) {
   return {
-    posts
+    posts: state.posts
   }
 }
 
-export default connect(mapStateToProps, { requestPosts })(Posts);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    requestPosts: (id) => dispatch(requestPosts(id)),
+    updateVote: (id, option) => dispatch(updateVote(id, option)),
+    deletePost: (id) => dispatch(deletePost(id))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Posts);

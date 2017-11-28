@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import uuidv1 from 'uuid/v1';
 
 import { addPost, updatePost } from '../Actions/posts'
+import { requestCategories } from '../Actions/categories'
 
 class PostForm extends Component {
   state = {
@@ -36,12 +37,13 @@ class PostForm extends Component {
       history.push(`/post/${newPost.id}`)        
     } else {
       updatePost(this.state.id, this.state.title, this.state.body)
-      history.push(`/post/${this.state.id}`)
+      history.push(`/${this.state.category}/${this.state.id}`)
     }
   }
 
   componentDidMount() {
     this.setState(this.props.post);
+    this.props.requestCategories();
   }
 
   render() {
@@ -107,7 +109,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     addPost: (post) => dispatch(addPost(post)),
     updatePost: (id, title, body) => dispatch(updatePost(id, title, body)),
-
+    requestCategories: ()=> dispatch(requestCategories())
   }
 }
 

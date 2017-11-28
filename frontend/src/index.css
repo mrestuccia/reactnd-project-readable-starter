@@ -2,14 +2,15 @@
   text-align: center;
   vertical-align: middle;
   width: 2vw;
-  height: 4vw;
+  height: 2vw;
 }
 
 .score button{
   position: relative;
   width: 2.5rem;
   height: 2.5rem;
-  margin: 1rem;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
   border-radius: 50%;
   font-size: xx-small
 }

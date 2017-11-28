@@ -32,7 +32,10 @@ class CommentForm extends Component {
         parentId: postId
       }
 
-      addComment(newComment).then(res => this.setState({ body: '', author: '' }));
+      addComment(newComment).then(res => {
+        this.setState({ body: '', author: '' });
+        
+      });
     } else {
       updateComment(this.state).then(res => onChangeState())
     }

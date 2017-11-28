@@ -34,6 +34,7 @@ class Comment extends Component {
             <button className="btn btn-default  btn-sm pull-right" onClick={() => deleteComment(comment.id)} >Delete</button>
             <button className="btn btn-default  btn-sm pull-right" onClick={this.onChangeState}>Edit</button>
           </div>
+          <hr/>
         </div>
     )
 
