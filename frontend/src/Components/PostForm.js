@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import uuidv1 from 'uuid/v1';
 
-import { addPost, updatePost } from '../Actions/posts'
+import { addPost, updatePost, requestPosts } from '../Actions/posts'
 import { requestCategories } from '../Actions/categories'
 
 class PostForm extends Component {
@@ -41,9 +41,13 @@ class PostForm extends Component {
     }
   }
 
+  componentWillMount(){
+
+  }
   componentDidMount() {
-    this.setState(this.props.post);
-    this.props.requestCategories();
+    this.props.requestCategories()
+      .then(()=>this.props.requestPosts())
+      .then(()=>this.setState(this.props.post))   
   }
 
   render() {
@@ -107,6 +111,7 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    requestPosts: (id) => dispatch(requestPosts(id)),
     addPost: (post) => dispatch(addPost(post)),
     updatePost: (id, title, body) => dispatch(updatePost(id, title, body)),
     requestCategories: ()=> dispatch(requestCategories())
