@@ -8,31 +8,18 @@ import { requestPosts, deletePost, updateVote } from '../Actions/posts'
 import Vote from './Vote'
 
 
-
-
 class Posts extends Component {
 
   state = {
     sortOption: 'vote'
   }
 
-  componentDidMount() {
-    this.onRouteChanged();
-  }
-
-  componentDidUpdate(prevProps) {
-    if (this.props.location !== prevProps.location) {
-      this.onRouteChanged();
-    }
-  }
-
   onDeleteClick(postId){
     this.props.deletePost(postId)
       .then(
-        this.props.history.push(`/`)
+        //this.props.history.push(`/`)
       )
   }
-
 
   handleOptionChange = (ev) => {
     this.setState({
@@ -40,17 +27,6 @@ class Posts extends Component {
     });
   }
 
-
-  onRouteChanged() {
-    const { match } = this.props;
-    let catid = null;
-
-    if (match) {
-      catid = match.params.categoryid
-    }
-
-    this.props.requestPosts(catid)
-  }
 
   render() {
     const { posts, updateVote } = this.props;
@@ -98,7 +74,7 @@ class Posts extends Component {
                     <td>{post.author}</td>
                     <td>{post.commentCount}</td>
                     <td>
-                      <Link className="btn btn-default btn-sm pull-right" to={`/${post.category}/${post.id}`}>Edit</Link>
+                      <Link className="btn btn-default btn-sm pull-right" to={`/${post.category}/${post.id}/edit`}>Edit</Link>
                       <button className="btn btn-default btn-sm pull-right" onClick={() => this.onDeleteClick(post.id)}>Delete</button>
                     </td>
 

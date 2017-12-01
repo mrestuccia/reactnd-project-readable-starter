@@ -42,8 +42,8 @@ export const deletePost = (id) => dispatch => {
     .then(post => dispatch(updatePostSuccess(post)))
 };
 
-export const updatePost = (id, title, body) => dispatch => {
-  return api.updatePost(id, title, body)
+export const updatePost = (id, title, body, category) => dispatch => {
+  return api.updatePost(id, title, body, category)
     .then(post => dispatch(updatePostSuccess(post)))
 };
 

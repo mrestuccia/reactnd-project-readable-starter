@@ -12,23 +12,18 @@ import Vote from './Vote'
 
 class Post extends Component {
 
-  componentWillMount() {
-    if(!this.props.posts)this.props.requestPosts();
-  }
-
   componentDidMount() {
-    this.props.requestComments(this.props.postId)
+    this.props.requestComments(this.props.postId);
   }
 
   onDeleteClick(postId) {
     const { history, deletePost } = this.props;
-    deletePost(postId).then(history.goBack())
+    deletePost(postId).then(history.push('/'));
   }
 
   render() {
     const { post, updateVote, postId, comments } = this.props;
     if (!post) return null;
-
     return (
       <div>
         <div className="panel panel-default">
@@ -57,10 +52,10 @@ class Post extends Component {
 }
 
 
-const mapStateToProps = (state, props) => {
-  const postId = props.match.params.postid;
-  const post = state.posts.filter(post => post.id === postId)[0];
-  const comments = state.comments
+const mapStateToProps = (props, state) => {
+  const postId = state.post.id;
+  const post = state.post;
+  const comments = props.comments;
   return {
     post,
     postId,

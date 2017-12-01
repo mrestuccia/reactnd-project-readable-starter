@@ -32,18 +32,14 @@ class PostForm extends Component {
         author: this.state.author,
         category: this.state.category || categories[0].name
       }
-
       addPost(newPost);
-      history.push(`/post/${newPost.id}`)        
+      history.push(`/${newPost.category}/${newPost.id}`)        
     } else {
-      updatePost(this.state.id, this.state.title, this.state.body)
+      updatePost(this.state.id, this.state.title, this.state.body, this.state.category)
       history.push(`/${this.state.category}/${this.state.id}`)
     }
   }
 
-  componentWillMount(){
-
-  }
   componentDidMount() {
     this.props.requestCategories()
       .then(()=>this.props.requestPosts())
@@ -100,7 +96,7 @@ class PostForm extends Component {
 
 
 const mapStateToProps = (state, props) => {
-  const postid = props.match.params.postid
+  const postid = props.match.path.split('/')[2] 
   const post = state.posts.filter(post => post.id === postid)[0];
   const categories = state.categories;
   return {
@@ -113,7 +109,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     requestPosts: (id) => dispatch(requestPosts(id)),
     addPost: (post) => dispatch(addPost(post)),
-    updatePost: (id, title, body) => dispatch(updatePost(id, title, body)),
+    updatePost: (id, title, body, category) => dispatch(updatePost(id, title, body, category)),
     requestCategories: ()=> dispatch(requestCategories())
   }
 }

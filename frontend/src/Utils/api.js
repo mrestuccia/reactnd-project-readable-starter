@@ -104,10 +104,10 @@ export function addPost(post) {
 }
 
 
-export function updatePost(id, title, body) {
+export function updatePost(id, title, body, category) {
   return fetch(`${URL}/posts/${id}`, {
     method: 'PUT',
-    body: JSON.stringify({title, body}),
+    body: JSON.stringify({title, body, category}),
     headers
   })
     .then(res => (res.json()));
